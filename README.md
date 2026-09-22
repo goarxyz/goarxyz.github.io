@@ -1,2 +1,3 @@
-# goarxyz.github.io
-goarxyz GitHub Pages
+# goarxyz
+
+Live site: https://goarxyz.github.io/
