@@ -75,7 +75,7 @@
   .hero-title{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(36px,5vw,72px); line-height:1.05; margin-bottom:14px;}
   .hero-meta{display:flex; gap:10px; align-items:center; font-size:13px; color:var(--muted); margin-bottom:16px; flex-wrap:wrap;}
   .hero-meta .rating{color:var(--accent); font-weight:600;}
-  .hero-overview{font-size:14.5px; color:#c7c8d0; max-width:540px; margin-bottom:24px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
+  .hero-overview{font-size:14.5px; color:#c7c8d0; max-width:540px; margin-bottom:24px; display:-webkit-box; -webkit-line-clamp:3; line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
   .hero-actions{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
 
   .btn{padding:13px 24px; border-radius:12px; font-size:16px; font-weight:600; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:all .18s;}
@@ -107,7 +107,7 @@
   .card:hover .card-save{opacity:1; transform:scale(1);}
   .card-save.saved{background:var(--accent); color:#0a0a0d; opacity:1; transform:scale(1);}
   .card-save svg{width:14px; height:14px;}
-  .card-title{font-size:12.5px; font-weight:600; margin-top:8px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+  .card-title{font-size:12.5px; font-weight:600; margin-top:8px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
   .card-sub{font-size:11px; color:var(--muted); margin-top:2px;}
 
   .rail-top10{align-items:flex-end; gap:10px; padding-left:5vw; scroll-padding-left:5vw;}
@@ -245,27 +245,71 @@
   .music-art img{width:100%; height:100%; object-fit:cover;}
   .music-art .badge-music{position:absolute; bottom:7px; right:7px; background:rgba(10,10,13,.8); color:var(--accent-music); font-size:10px; font-weight:700; padding:3px 7px; border-radius:5px;}
 
-  @media (max-width:640px){
-    header{gap:10px; padding:calc(12px + env(safe-area-inset-top,0px)) 4vw 0;}
-    nav{display:none;}
-    .header-tools{width:100%; margin-left:0;}
-    .search-wrap{width:100%; flex:1;}
-    .cat-bar{top:64px;}
-    .hero{min-height:64vh;}
-    .hero-title{font-size:clamp(28px,8vw,40px);}
-    .btn{padding:11px 20px; font-size:14px;}
-    .card{width:132px;}
-    .section-head h2{font-size:20px;}
-    .pill-item{width:44px; height:48px;} .pill-item span{font-size:8px;}
-    .rail-top10{gap:8px; padding-left:4vw;}
-    .top10-item{width:142px;}
-    .top10-rank{font-size:56px; margin-right:-14px;}
-    .top10-rank.t10-wide{font-size:40px; margin-right:-10px;}
-    .top10-item .poster-wrap,
-    .top10-item .card-title,
-    .top10-item .card-sub{width:96px;}
-    .section-head .see-all{font-size:12px; padding-right:8px;}
+  /* ============================================================
+     ADAPTIVE LAYOUT SYSTEM
+     One fluid scale for every view (home, tabs, provider home,
+     grid view, modal, player) from 320px phones to 4K screens.
+     ============================================================ */
+  :root{
+    --gutter:5vw;        /* shared page gutter — updated per breakpoint */
+    --header-h:54px;     /* real sticky header height -> cat-bar offset */
+    --hero-pad:56px;     /* hero bottom padding */
   }
+
+  /* Keep the header on ONE row so the sticky offset is predictable.
+     The nav scrolls horizontally instead of pushing the tools to row 2. */
+  header{flex-wrap:nowrap; padding-left:var(--gutter); padding-right:var(--gutter);}
+  nav{flex:0 1 auto; min-width:0;}
+  .header-tools{margin-bottom:0; flex-wrap:nowrap;}
+
+  /* Every horizontal band shares the same gutter */
+  .cat-bar, .section-head, .rail, .rail-top10, .chips, .brand-hubs,
+  .provider-launcher, .grid-view, .prov-home-bar{
+    padding-left:var(--gutter); padding-right:var(--gutter);
+  }
+  .hero{padding-left:var(--gutter); padding-right:var(--gutter); padding-bottom:var(--hero-pad);}
+  .cat-bar{top:var(--header-h);}
+  .hub-section{margin-left:var(--gutter); margin-right:var(--gutter);}
+  .hub-body .rail{padding-left:20px; padding-right:20px;}
+  .rail-top10{scroll-padding-left:var(--gutter);}
+  .provider-launcher{max-width:none; grid-template-columns:repeat(auto-fill, minmax(clamp(68px,6vw,96px), 1fr));}
+  .grid-view .grid{grid-template-columns:repeat(auto-fill, minmax(clamp(118px,13vw,190px), 1fr)); gap:clamp(12px,1.2vw,18px);}
+
+  /* Fluid type */
+  .hero-title{font-size:clamp(28px,5.2vw + 6px,96px);}
+  .hero-overview{font-size:clamp(14px,.55vw + 12px,19px);}
+  .hero-meta{font-size:clamp(12.5px,.5vw + 11px,16px);}
+  .prov-hero .hero-logo{max-width:min(260px,70vw);}
+  .section-head h2{font-size:clamp(19px,1.1vw + 12px,30px);}
+  .section-head p{font-size:clamp(12px,.3vw + 11px,14px);}
+  .card-title{font-size:clamp(12.5px,.3vw + 11.5px,15px);}
+  .card-sub{font-size:clamp(10.5px,.25vw + 9.8px,12px);}
+  .cat-chip{padding:clamp(7px,.5vw + 6px,9px) clamp(14px,1vw + 12px,18px); font-size:clamp(12.5px,.4vw + 11px,14px);}
+  .btn{font-size:clamp(14px,.45vw + 12px,19px); padding:clamp(11px,1.1vw + 7px,18px) clamp(20px,1.5vw + 14px,32px);}
+
+  /* Fluid covers */
+  .card{width:clamp(126px,15.5vw,250px);}
+  .music-card{width:clamp(126px,15.5vw,220px);}
+  .provider-app-icon{width:clamp(64px,5vw + 42px,92px); height:clamp(64px,5vw + 42px,92px);}
+
+  /* Top 10 rail — rank glyph scales with its poster */
+  .rail-top10{gap:clamp(8px,1vw,18px);}
+  .top10-item{width:clamp(148px,19vw,280px);}
+  .top10-item .poster-wrap,
+  .top10-item .card-title,
+  .top10-item .card-sub{width:clamp(94px,11.5vw,186px);}
+  .top10-rank{font-size:clamp(54px,8.6vw,136px); margin-right:-0.24em;}
+  .top10-rank.t10-wide{font-size:calc(clamp(54px,8.6vw,136px) * .72); margin-right:-0.24em;}
+
+  /* Bottom pill nav can never overflow the viewport */
+  .pill-nav{width:min(94vw,430px);}
+  .pill-item{flex:1 1 0; min-width:0; width:auto; height:clamp(44px,4.4vw,52px); border-radius:clamp(18px,2vw,24px);}
+  .pill-item svg{width:clamp(16px,1.2vw + 12px,19px); height:auto;}
+
+  /* Modal adapts to narrow screens */
+  .modal{width:min(860px,94vw);}
+  .modal-body{padding:0 clamp(16px,3vw,30px) clamp(20px,3vw,30px);}
+  .modal-body h2{font-size:clamp(19px,2vw + 12px,26px);}
 
   .card:focus-visible, .top10-item:focus-visible, .provider-app:focus-visible,
   .btn:focus-visible, .see-all:focus-visible, .cat-chip:focus-visible,
@@ -276,88 +320,142 @@
     outline-offset: 4px;
   }
 
-  @media (min-width:900px){
-    .pill-nav{display:none;}
-    header nav{display:flex;}
-    .logo{font-size:26px;}
-    nav{font-size:16px; gap:20px;}
-    .search-wrap{width:min(380px,32vw);}
-    .search-wrap input{font-size:15px; padding:11px 16px 11px 38px;}
-    .hero{min-height:80vh; padding:0 5vw 70px;}
-    .hero-title{font-size:clamp(44px,5.2vw,78px);}
-    .hero-overview{font-size:17px; max-width:620px;}
-    .btn{padding:15px 28px; font-size:17px;}
-    .card{width:200px;}
-    .card-title{font-size:14px;}
-    .section-head h2{font-size:26px;}
-    .section-head p{font-size:14px;}
-    .see-all{font-size:15px;}
-    .rail{gap:18px; padding:4px 5vw 22px;}
-    .top10-item{width:230px;}
-    .top10-rank{font-size:108px; margin-right:-30px;}
-    .top10-item .poster-wrap, .top10-item .card-title, .top10-item .card-sub{width:150px;}
-    .provider-app-icon{width:84px; height:84px;}
-    .cat-chip{padding:9px 18px; font-size:14px;}
-  }
-  @media (min-width:1280px){
-    body{padding-bottom:48px;}
-    .logo{font-size:30px;}
-    nav{font-size:18px; gap:24px;}
-    .hero{min-height:84vh; padding:0 6vw 80px;}
-    .hero-title{font-size:clamp(52px,5.6vw,88px);}
-    .hero-overview{font-size:19px; max-width:700px; -webkit-line-clamp:4;}
-    .hero-meta{font-size:16px;}
-    .btn{padding:18px 32px; font-size:19px; border-radius:14px;}
-    .card{width:230px;}
-    .card-title{font-size:15px;}
-    .section-head{padding:0 6vw; margin-bottom:18px;}
-    .section-head h2{font-size:30px;}
-    .rail{gap:22px; padding:4px 6vw 26px;}
-    .rail-top10{padding-left:6vw;}
-    .top10-item{width:260px;}
-    .top10-rank{font-size:124px; margin-right:-34px;}
-    .top10-item .poster-wrap, .top10-item .card-title, .top10-item .card-sub{width:170px;}
-    .provider-app-icon{width:92px; height:92px; border-radius:22px;}
-  }
-  @media (min-width:1600px){
-    .card{width:250px;}
-    .hero-title{font-size:clamp(58px,5.8vw,96px);}
-    .top10-item{width:280px;}
-    .top10-rank{font-size:136px;}
-    .top10-item .poster-wrap, .top10-item .card-title, .top10-item .card-sub{width:186px;}
+  /* Touch devices: keep save reachable without hover, without hiding badges */
+  @media (hover:none){
+    .card-save{opacity:1; transform:scale(1); top:auto; bottom:7px;}
   }
 
+  /* ---------- phones ---------- */
+  @media (max-width:640px){
+    :root{--gutter:4vw; --hero-pad:34px;}
+    header{flex-wrap:wrap; gap:10px; padding-top:calc(12px + env(safe-area-inset-top,0px));}
+    nav{display:none;}
+    .header-tools{width:100%; margin-left:0; margin-bottom:10px;}
+    .search-wrap{width:100%; flex:1;}
+    .cat-bar{position:static;}            /* header wraps here: keep it in flow, no offset overlap */
+    .hero{min-height:min(64vh,520px);}
+    .card{width:clamp(118px,34vw,150px);}
+    .music-card{width:clamp(118px,34vw,150px);}
+    .top10-item{width:clamp(138px,44vw,180px);}
+    .top10-item .poster-wrap,
+    .top10-item .card-title,
+    .top10-item .card-sub{width:clamp(90px,30vw,110px);}
+    .provider-launcher{grid-template-columns:repeat(auto-fill, minmax(72px,1fr)); gap:14px 8px;}
+    .provider-app-name{max-width:76px;}
+    .modal-backdrop{padding:16px 12px 40px;}
+    .player-bar{padding-left:12px; padding-right:12px; row-gap:8px;}
+    .player-picker{flex-wrap:wrap;}
+    .section-head .see-all{padding-right:8px;}
+    .toast{max-width:92vw; bottom:calc(88px + env(safe-area-inset-bottom,0px));}
+  }
+
+  /* ---------- compact phones ---------- */
+  @media (max-width:400px){
+    :root{--gutter:3.5vw;}
+    .search-wrap input{font-size:12.5px; padding:8px 12px 8px 32px;}
+    .region-select{padding:5px 8px;}
+    .pill-nav{width:calc(100vw - 16px);}
+    .pill-item span{font-size:7.5px;}
+    .top10-item{width:120px;}
+    .top10-item .poster-wrap,
+    .top10-item .card-title,
+    .top10-item .card-sub{width:78px;}
+    .btn{padding:10px 16px; font-size:13.5px;}
+  }
+
+  /* ---------- tablets & small laptops ---------- */
+  @media (min-width:900px){
+    :root{--header-h:61px; --hero-pad:64px;}
+    .pill-nav{display:none;}
+    body{padding-bottom:48px;}
+    .logo{font-size:26px;}
+    nav{display:flex; font-size:16px; gap:20px;}
+    .search-wrap{width:min(380px,32vw);}
+    .search-wrap input{font-size:15px; padding:11px 16px 11px 38px;}
+    .hero{min-height:80vh;}
+    .see-all{font-size:15px;}
+    .rail{gap:18px;}
+    .cat-chip{font-size:14px; padding:9px 18px;}
+  }
+
+  /* ---------- desktop ---------- */
+  @media (min-width:1280px){
+    :root{--gutter:6vw;}
+    .logo{font-size:30px;}
+    nav{font-size:18px; gap:24px;}
+    .hero{min-height:84vh;}
+    .hero-overview{max-width:700px; -webkit-line-clamp:4; line-clamp:4;}
+    .section-head{margin-bottom:18px;}
+    .rail{gap:22px;}
+    .provider-app-icon{border-radius:22px;}
+  }
+
+  /* ---------- large desktop / 4K ---------- */
+  @media (min-width:1600px){
+    :root{--header-h:62px;}
+    .logo{font-size:32px;}
+    .hero-content{max-width:min(820px,60vw);}
+    .provider-app-icon{width:96px; height:96px; border-radius:24px;}
+  }
+  @media (min-width:1920px){
+    /* keep content centred and readable on ultra-wide displays */
+    :root{--gutter:max(6vw, calc((100vw - 1760px) / 2));}
+    .card{width:250px;}
+    .music-card{width:230px;}
+    .top10-item{width:280px;}
+    .top10-item .poster-wrap,
+    .top10-item .card-title,
+    .top10-item .card-sub{width:186px;}
+    .top10-rank{font-size:136px;}
+    .top10-rank.t10-wide{font-size:98px;}
+  }
+
+  /* ---------- short viewports (landscape phones, small windows) ---------- */
+  @media (max-height:520px){
+    :root{--hero-pad:26px;}
+    .hero{min-height:62vh;}
+    .modal-hero{aspect-ratio:21/7;}
+  }
+  @media (orientation:landscape) and (max-height:520px) and (max-width:900px){
+    .hero{min-height:76vh;}
+    .pill-nav{bottom:calc(8px + env(safe-area-inset-bottom,0px));}
+  }
+
+  /* ---------- TV / 10-foot UI ---------- */
   body.tv{
     font-size:18px;
     padding: 3.5vh 0 4vh;
     cursor: none;
+    --hero-pad:8vh;
+    --header-h:calc(3.5vh + 54px);
   }
-  body.tv header{padding:3.5vh 6vw 0; background:linear-gradient(to bottom, rgba(10,10,13,.98), transparent);}
+  body.tv header{padding:3.5vh var(--gutter) 0; background:linear-gradient(to bottom, rgba(10,10,13,.98), transparent); flex-wrap:nowrap;}
   body.tv .logo{font-size:32px;}
-  body.tv nav{font-size:22px; gap:28px;}
+  body.tv nav{display:flex; font-size:22px; gap:28px;}
   body.tv nav a{padding-bottom:18px;}
   body.tv .header-tools{display:none;}
-  body.tv .cat-bar{padding:16px 6vw; top:72px;}
+  body.tv .cat-bar{padding:16px var(--gutter);}
   body.tv .cat-chip{padding:12px 22px; font-size:18px; border-radius:24px;}
-  body.tv .hero{min-height:78vh; padding:0 6vw 8vh;}
+  body.tv .hero{min-height:78vh;}
   body.tv .hero-eyebrow{font-size:18px;}
   body.tv .hero-title{font-size:clamp(48px,6vw,84px);}
   body.tv .hero-meta{font-size:18px;}
-  body.tv .hero-overview{font-size:20px; max-width:720px; -webkit-line-clamp:3;}
+  body.tv .hero-overview{font-size:20px; max-width:720px; -webkit-line-clamp:3; line-clamp:3;}
   body.tv .btn{padding:18px 32px; font-size:22px;}
-  body.tv .section-head{padding:0 6vw; margin-bottom:20px;}
+  body.tv .section-head{margin-bottom:20px;}
   body.tv .section-head h2{font-size:32px;}
   body.tv .section-head p{font-size:16px;}
   body.tv .see-all{font-size:18px;}
-  body.tv .card{width:210px;}
+  body.tv .card{width:clamp(180px,15vw,240px);}
   body.tv .card-title{font-size:16px;}
-  body.tv .rail{gap:22px; padding:4px 6vw 28px;}
-  body.tv .rail-top10{padding-left:6vw; gap:16px;}
-  body.tv .top10-item{width:240px;}
-  body.tv .top10-rank{font-size:128px; margin-right:-32px;}
+  body.tv .rail{gap:22px;}
+  body.tv .rail-top10{gap:16px;}
+  body.tv .top10-item{width:clamp(190px,17vw,260px);}
   body.tv .top10-item .poster-wrap,
   body.tv .top10-item .card-title,
-  body.tv .top10-item .card-sub{width:160px;}
+  body.tv .top10-item .card-sub{width:clamp(130px,10vw,170px);}
+  body.tv .top10-rank{font-size:clamp(72px,8vw,130px);}
+  body.tv .top10-rank.t10-wide{font-size:calc(clamp(72px,8vw,130px) * .72);}
   body.tv .provider-app-icon{width:96px; height:96px; border-radius:24px;}
   body.tv .pill-nav{display:none;}
   body.tv .player-bar{height:72px; padding:0 24px;}
