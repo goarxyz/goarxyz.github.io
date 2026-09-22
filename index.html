@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
 <title>goarxyz — movies, shows, anime, kids & music</title>
+<meta name="application-name" content="goarxyz" />
 <meta name="theme-color" content="#0a0a0d" />
+<meta name="color-scheme" content="dark" />
+<meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="goarxyz" />
+<meta name="msapplication-TileColor" content="#0a0a0d" />
 <link id="appleTouchIcon" rel="apple-touch-icon" />
 <link id="manifestLink" rel="manifest" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,9 +36,9 @@
   </nav>
   <div class="header-tools">
     <select class="region-select" id="regionSelect" aria-label="Region"></select>
-    <div class="tunnel-chip busy" id="tunnelChip" title="tunnel">
+    <div class="tunnel-chip busy" id="tunnelChip" title="server" hidden>
       <span class="dot"></span>
-      <span id="tunnelLabel">tunnel…</span>
+      <span id="tunnelLabel">ready</span>
       <select id="wispSelect" aria-label="server"></select>
       <button type="button" id="wispRetry">Retry</button>
     </div>
@@ -71,6 +77,8 @@
   <div class="player-note">goarxyz does not host or store video files.</div>
 </div>
 <nav class="pill-nav" id="pillNav"></nav>
-<script src="app.js"></script>
+<script src="app-1.js"></script>
+<script src="app-2.js"></script>
+<script src="app-3.js"></script>
 </body>
 </html>
