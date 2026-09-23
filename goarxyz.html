@@ -13,8 +13,7 @@
 (async function(){
   const tab = new URLSearchParams(location.search).get("tab") || "";
   const urls = [
-    "https://raw.githubusercontent.com/goarxyz/goarxyz.github.io/0af99d81ff88f90314d7b2bf3bd4517e726c0c98/index.html",
-    "https://cdn.jsdelivr.net/gh/goarxyz/goarxyz.github.io@0af99d81ff88f90314d7b2bf3bd4517e726c0c98/index.html"
+    "https://raw.githubusercontent.com/goarxyz/goarxyz.github.io/0af99d81ff88f90314d7b2bf3bd4517e726c0c98/index.html"
   ];
   let html = "";
   for (const u of urls){
@@ -27,8 +26,13 @@
     document.getElementById("boot").textContent = "Catalog snapshot failed to load.";
     return;
   }
-  html = html.replace("</script>", ";window.resolveSources=resolveSources;window.playSource=playSource;window.destroyHls=destroyHls;window.closePlayer=closePlayer;window.tmdb=tmdb;window.playerState=playerState;window.setPlayerStatus=setPlayerStatus;</script>");
-  html = html.replace("</body>", "<script src=\"embeds.js\"></script></body>");
+  const last = html.lastIndexOf("</script>");
+  if (last !== -1) {
+    html = html.slice(0, last) +
+      ";window.resolveSources=resolveSources;window.playSource=playSource;window.destroyHls=destroyHls;window.closePlayer=closePlayer;window.tmdb=tmdb;window.playerState=playerState;window.setPlayerStatus=setPlayerStatus;" +
+      html.slice(last);
+  }
+  html = html.replace("</body>", "<script src=\"embeds.js\"><\/script></body>");
   if (tab && tab !== "home" && tab !== "music") {
     html = html.replace("</body>", "<script>setTimeout(function(){try{if(typeof routeTo==='function')routeTo('"+tab+"');}catch(e){}},200)<\/script></body>");
   }
