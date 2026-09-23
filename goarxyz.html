@@ -5,14 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>goarxyz — Watch</title>
 <meta name="theme-color" content="#0a0a0d" />
-<style>html,body{margin:0;height:100%;background:#0a0a0d}iframe{border:0;width:100%;height:100%}</style>
+<style>html,body{margin:0;background:#0a0a0d;color:#eceef1;font-family:Inter,system-ui,sans-serif}#boot{padding:48px 24px;text-align:center}</style>
 </head>
 <body>
-<iframe id="app" title="Catalog" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>
+<div id="boot">Loading catalog…</div>
 <script>
-const tab = new URLSearchParams(location.search).get("tab") || "home";
-const base = "https://cdn.jsdelivr.net/gh/goarxyz/goarxyz.github.io@0af99d81ff88f90314d7b2bf3bd4517e726c0c98/index.html";
-document.getElementById("app").src = base + "?tab=" + encodeURIComponent(tab);
+(async function(){
+  const tab = new URLSearchParams(location.search).get("tab") || "";
+  const urls = [
+    "https://raw.githubusercontent.com/goarxyz/goarxyz.github.io/0af99d81ff88f90314d7b2bf3bd4517e726c0c98/index.html",
+    "https://cdn.jsdelivr.net/gh/goarxyz/goarxyz.github.io@0af99d81ff88f90314d7b2bf3bd4517e726c0c98/index.html"
+  ];
+  let html = "";
+  for (const u of urls){
+    try{
+      const r = await fetch(u, {cache:"no-store"});
+      if (r.ok) { html = await r.text(); if (html.includes("<!DOCTYPE")) break; }
+    } catch(e) {}
+  }
+  if (!html.includes("<html")) {
+    document.getElementById("boot").textContent = "Catalog snapshot failed to load.";
+    return;
+  }
+  if (tab && tab !== "home" && tab !== "music") {
+    html = html.replace("</body>", "<script>window.addEventListener('load',function(){try{if(typeof routeTo==='function')routeTo('"+tab+"');}catch(e){}})<\/script></body>");
+  }
+  document.open();
+  document.write(html);
+  document.close();
+})();
 </script>
 </body>
 </html>
