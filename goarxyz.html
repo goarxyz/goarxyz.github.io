@@ -27,8 +27,10 @@
     document.getElementById("boot").textContent = "Catalog snapshot failed to load.";
     return;
   }
+  html = html.replace("</script>", ";window.resolveSources=resolveSources;window.playSource=playSource;window.destroyHls=destroyHls;window.closePlayer=closePlayer;window.tmdb=tmdb;window.playerState=playerState;window.setPlayerStatus=setPlayerStatus;</script>");
+  html = html.replace("</body>", "<script src=\"embeds.js\"></script></body>");
   if (tab && tab !== "home" && tab !== "music") {
-    html = html.replace("</body>", "<script>window.addEventListener('load',function(){try{if(typeof routeTo==='function')routeTo('"+tab+"');}catch(e){}})<\/script></body>");
+    html = html.replace("</body>", "<script>setTimeout(function(){try{if(typeof routeTo==='function')routeTo('"+tab+"');}catch(e){}},200)<\/script></body>");
   }
   document.open();
   document.write(html);
